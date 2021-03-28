@@ -1,0 +1,9 @@
+{
+  "default-runtime": "runai",
+  "runtimes": {
+    "nvidia": {
+      "path": "runai-container-runtime",
+      "runtimeArgs": []
+    }
+  }
+}
