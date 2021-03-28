@@ -10,7 +10,6 @@ import (
 )
 
 const (
-	prestartHookBinary = "patcher-hook"
 	srcContainerToolkitDirectory = "/var/lib/runai/shared/"
 	dstContainerToolkitDirectory = "/runai/shared/"
 )
