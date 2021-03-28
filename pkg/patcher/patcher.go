@@ -7,8 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
-	"strings"
 )
 
 const (
@@ -25,31 +23,6 @@ func New(logger *log.Logger) *Patcher {
 	return &Patcher{
 		logger: logger,
 	}
-}
-
-func (p *Patcher) addHookIfNotExists(spec *specs.Spec) error {
-	if spec.Hooks == nil {
-		spec.Hooks = &specs.Hooks{}
-	} else if len(spec.Hooks.Prestart) != 0 {
-		for _, preStartHook := range spec.Hooks.Prestart {
-			if strings.Contains(preStartHook.Path, prestartHookBinary) {
-				p.logger.Printf(fmt.Sprintf("Binary %v exists as prestart hook: %v\n", prestartHookBinary, preStartHook))
-				return nil
-			}
-		}
-	}
-
-	prestartHookBinaryFullPath, err := exec.LookPath(prestartHookBinary)
-	if err != nil {
-		return err
-	}
-
-	hook := specs.Hook{
-		Path: prestartHookBinaryFullPath,
-		Args: []string{prestartHookBinaryFullPath, "prestart"},
-	}
-	spec.Hooks.Prestart = append(spec.Hooks.Prestart, hook)
-	return nil
 }
 
 func (p *Patcher) addMountIfNotExists(spec *specs.Spec) {
