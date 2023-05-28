@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	runcCreateCommand = "create"
-	originRuntimeBinary = "nvidia-container-runtime"
+	runcCreateCommand   = "create"
+	originRuntimeBinary = "runc"
 )
 
 func getCommandAndBundlePath(args []string) (bool, string, error) {
@@ -22,10 +22,10 @@ func getCommandAndBundlePath(args []string) (bool, string, error) {
 		if arg == runcCreateCommand {
 			isCommand = true
 		} else if arg == "--bundle" || arg == "-b" {
-			if len(args) == i + 1 {
+			if len(args) == i+1 {
 				return false, "", fmt.Errorf("could not find bundle path after bundle flag in args {%v}", args)
 			}
-			bundle = args[i + 1]
+			bundle = args[i+1]
 		}
 	}
 
@@ -49,7 +49,7 @@ func execOrigRuntime() error {
 }
 
 func main() {
-	logger := logger.New("runai-container-runtime")
+	logger := logger.New("omer-container-runtime")
 
 	isCreateCommand, bundlePath, err := getCommandAndBundlePath(os.Args)
 	if err != nil {

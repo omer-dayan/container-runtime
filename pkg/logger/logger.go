@@ -6,10 +6,10 @@ import (
 	"os"
 )
 
-const logsDirPath = "/var/log/patcher-container-runtime.log"
+const logsDirPath = "/var/log"
 
 func getLogFilePath(appName string) string {
-	return fmt.Sprintf("%v-%v", logsDirPath, appName)
+	return fmt.Sprintf("%v/%v", logsDirPath, appName)
 }
 
 func New(appName string) *log.Logger {

@@ -35,11 +35,15 @@ func (p *Patcher) addMountIfNotExists(spec *specs.Spec) {
 	}
 
 	newMount := specs.Mount{
-		Source: srcContainerToolkitDirectory,
+		Source:      srcContainerToolkitDirectory,
 		Destination: dstContainerToolkitDirectory,
-		Options: []string{"bind"},
+		Options:     []string{"bind"},
 	}
 	spec.Mounts = append(spec.Mounts, newMount)
+}
+
+func (p *Patcher) addPocEnvVar(spec *specs.Spec) {
+	spec.Process.Env = append(spec.Process.Env, "POC=success")
 }
 
 func (p *Patcher) AddPatches(bundleDirectory string) error {
@@ -48,8 +52,8 @@ func (p *Patcher) AddPatches(bundleDirectory string) error {
 		return err
 	}
 
-	p.addMountIfNotExists(ociSpec)
-	p.logger.Printf(fmt.Sprintf("Added mount if was not exist [%v]\n", bundleDirectory))
+	p.addPocEnvVar(ociSpec)
+	p.logger.Printf(fmt.Sprintf("Added env var as a POC [%v]\n", bundleDirectory))
 
 	return p.bundle.WriteOciSpecToBundle(bundleDirectory, ociSpec)
 }
